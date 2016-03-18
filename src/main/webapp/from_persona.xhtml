@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+
+        <ui:define name="content">
+            <h:form id="formPersona">
+                <p:growl id="growl" showDetail="false" sticky="true" autoUpdate="true"/> 
+
+                <p:panel header="#{sisManejadorPrincipalMb.persona.id > 0 ? 'Modificar' : 'Nuevo'} Funcionario">
+                    <h:panelGrid id="grid" columns="2" cellpadding="5">
+                        <h:outputLabel for="cedula" value="Cedula(*):" style="font-weight:bold"/>                    
+                        <p:inputText id="cedula" 
+                                     label="Cedula"
+                                     required="true"
+                                     value="#{sisManejadorPrincipalMb.persona.ci}"
+                                     disabled="#{sisManejadorPrincipalMb.bloquearCampoCedulaFormPersona}">
+                            <f:ajax listener="#{sisManejadorPrincipalMb.buscarPorCedula()}" 
+                                    render="nombre apellido anioIngreso institucion cargo dependencia crear dialogo" />
+                        </p:inputText>
+
+                        <h:outputLabel for="nombre" value="Nombre(*):" style="font-weight:bold"/>                    
+                        <p:inputText id="nombre" 
+                                     label="Nombre"
+                                     required="true"
+                                     disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersona}"
+                                     value="#{sisManejadorPrincipalMb.persona.nombre}"/>
+
+                        <h:outputLabel for="apellido" value="Apellido(*):" style="font-weight:bold"/> 
+                        <p:inputText id="apellido" 
+                                     label="Apellido"
+                                     required="true"
+                                     disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersona}"
+                                     value="#{sisManejadorPrincipalMb.persona.apellido}"/>
+
+                        <h:outputLabel for="anioIngreso" value="Año de Ingreso(*):" style="font-weight:bold"/> 
+                        <p:inputText id="anioIngreso" class="form-control" 
+                                     label="Año de Ingreso"
+                                     required="true"                                     
+                                     disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersona}"
+                                     value="#{sisManejadorPrincipalMb.persona.anioIngreso}"/>
+
+                        <h:outputLabel for="institucion" value="Institución(*):" style="font-weight:bold"/> 
+                        <p:selectOneMenu id="institucion" 
+                                         value="#{sisManejadorPrincipalMb.persona.sisInstitucionId.id}" 
+                                         title="Institución"
+                                         label="Institución"
+                                         effect="none"
+                                         disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersona}"
+                                         required="true">
+                            <f:selectItem itemLabel="Seleccione una Institución" 
+                                          noSelectionOption="false"
+                                          itemDisabled="true"/>
+                            <f:selectItems value="#{sisManejadorPrincipalMb.listaInstituciones}" 
+                                           var="institucion"
+                                           itemValue="#{institucion.id}" 
+                                           itemLabel="#{institucion.institucion.toUpperCase()}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="cargo" value="Cargo(*):" style="font-weight:bold"/> 
+                        <p:selectOneMenu id="cargo" 
+                                         value="#{sisManejadorPrincipalMb.persona.sisCargoId.id}" 
+                                         title="Cargo"
+                                         label="Cargo"
+                                         effect="none"
+                                         disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersona}"
+                                         required="true">
+                            <f:selectItem itemLabel="Seleccione un Cargo" 
+                                          noSelectionOption="false"
+                                          itemDisabled="true"/>
+                            <f:selectItems value="#{sisManejadorPrincipalMb.listaCargos}" 
+                                           var="cargo"
+                                           itemValue="#{cargo.id}" 
+                                           itemLabel="#{cargo.cargo.toUpperCase()}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="dependencia" value="Dependencia(*):" style="font-weight:bold"/> 
+                        <p:selectOneMenu id="dependencia" 
+                                         value="#{sisManejadorPrincipalMb.persona.sisDependenciaId.id}" 
+                                         title="Dependencia"
+                                         label="Dependencia"
+                                         effect="none"
+                                         disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersona}"
+                                         required="true">
+                            <f:selectItem itemLabel="Seleccione una Dependencia" 
+                                          noSelectionOption="false"
+                                          itemDisabled="true"/>
+                            <f:selectItems value="#{sisManejadorPrincipalMb.listaDependencias}" 
+                                           var="dependencia"
+                                           itemValue="#{dependencia.id}" 
+                                           itemLabel="#{dependencia.dependencia.toUpperCase()}"/>
+                        </p:selectOneMenu>
+
+                    </h:panelGrid>
+                    <div align="left">
+                        <h:panelGrid columns="2" cellpadding="5" border="0">
+                            <p:commandButton id="crear"
+                                             value="#{sisManejadorPrincipalMb.persona.id > 0 ? 'Actualizar' : 'Crear'}"
+                                             title="#{sisManejadorPrincipalMb.persona.id > 0 ? 'Actualizar' : 'Crear'}"
+                                             icon="#{sisManejadorPrincipalMb.persona.id > 0 ? 'fa fa-refresh' : 'fa fa-check-square-o'}" 
+                                             rendered="true"
+                                             action="#{sisManejadorPrincipalMb.btnCrearModificarPersona()}"
+                                             style="margin-right:10px"
+                                             disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersona}"/>
+                            <p:commandButton id="cancelar" 
+                                             value="Cancelar"
+                                             title="Cancelar"
+                                             icon="fa fa-remove"
+                                             style="margin-right:10px"
+                                             action="personas"
+                                             process="@this"/>
+                        </h:panelGrid>
+                    </div>
+
+
+
+                    <h:panelGrid columns="1" cellpadding="5">
+                        <h:outputLabel value="Tenga en cuenta que los campos con * son obligatorios" 
+                                       style="font-weight:bold; color: #ff0000; font-size: medium"/>                    
+
+                    </h:panelGrid>
+
+                </p:panel>
+            </h:form>
+
+            <p:dialog id="dialogo"
+                      header="Atención"  
+                      modal="true" 
+                      height="100"
+                      draggable="false"
+                      visible="#{sisManejadorPrincipalMb.bloquearCamposFormPersona == true ? true : false}"
+                      appendTo="@(body)"
+                      resizable="false">
+                <h:outputText value="El funcionario ya existe" />
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+</html>

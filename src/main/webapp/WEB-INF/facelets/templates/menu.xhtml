@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <h:form>
+            <p:menu toggleable="true">
+                <p:submenu label="Menu Principal" expanded="false">
+                    <p:menuitem value="Funcionarios" action="personas" />
+                    <p:menuitem value="Detalle Funcionarios" action="personas_detalles" />
+                </p:submenu>
+                <p:submenu label="Panel de Control" expanded="true" >
+                    <p:menuitem value="Usuarios" url="body.xhtml" />
+                    <p:menuitem value="Dependencias" url="http://www.primefaces.org/documentation.html" />
+                    <p:menuitem value="Institución" url="http://www.primefaces.org/documentation.html" />
+                    <p:menuitem value="Relación Laboral" url="http://forum.primefaces.org/" />
+                    <p:menuitem value="Conceptos" url="http://www.primefaces.org/themes.html" />
+                    <p:menuitem value="Cargos" url="http://www.primefaces.org/themes.html" />
+                    <p:menuitem value="Roles" url="http://www.primefaces.org/themes.html" />
+                </p:submenu>
+            </p:menu>
+        </h:form>
+
+    </ui:composition>
+</html>

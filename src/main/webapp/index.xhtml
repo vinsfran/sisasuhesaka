@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+
+        <h:head>
+            <f:facet name="first">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                <link rel="shortcut icon" href="resources/img/favicon.ico" />
+                <title>sisasuhesaka</title>
+            </f:facet>
+        </h:head>
+
+        <h:body style="background: #c0c0c0">
+            <div align="center">
+                <p:dialog header="Acceso al sistema" 
+                          visible="true" 
+                          modal="false" 
+                          closable="false" 
+                          resizable="false"
+                          draggable="false"
+                          height="360"
+                          position="center">
+                    <h:form >
+                        <h:panelGrid border="0">
+                            <p:row>  
+                                <p:column colspan="2">
+                                    <div align="center" >
+                                        <h:graphicImage library="img" name="login.png" width="150" height="150"/>
+                                    </div>
+                                </p:column>
+                            </p:row>
+                            <p:row>  
+                                <p:column colspan="1" >
+                                    <h:outputLabel value="Usuario" 
+                                                   for="username"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="1">
+                                    <p:inputText value="#{sisManejadorPrincipalMb.usuario.login}"   
+                                                 id="username" 
+                                                 required="true" 
+                                                 label="username"/>  
+                                </p:column>
+                            </p:row>
+
+                            <p:row>  
+                                <p:column colspan="1">
+                                    <h:outputLabel value="Password"
+                                                   for="password"/> 
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:password value="#{sisManejadorPrincipalMb.usuario.password}"
+                                                id="password" 
+                                                required="true" 
+                                                label="password"/>
+                                </p:column>
+                            </p:row>
+                        </h:panelGrid>
+                        <div align="right" >
+                            <br/>
+                            <p:commandButton id="loginButton" 
+                                             value="Ingresar"
+                                             action="#{sisManejadorPrincipalMb.btnIngresar()}"
+                                             icon="fa fa-check-square-o"
+                                             update=":growl"/>
+                        </div>
+                    </h:form>
+                </p:dialog> 
+            </div>
+
+            <p:growl id="growl" showDetail="true" sticky="true" />
+
+        </h:body>
+    </f:view>
+</html>
+

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+
+        <ui:define name="content">
+            <h:form id="formPersona">
+                <p:growl id="growl" showDetail="false" sticky="true" autoUpdate="true"/> 
+
+                <p:panel header="#{sisManejadorPrincipalMb.personaDetalle.id > 0 ? 'Modificar' : 'Nuevo'} Detalle de Funcionario">
+                    <h:panelGrid id="grid" columns="2" cellpadding="5">
+                        <h:outputLabel for="cedula" value="Cedula(*):" style="font-weight:bold"/>                    
+                        <p:inputText id="cedula" 
+                                     label="Cedula"
+                                     required="true"
+                                     value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.ci}"
+                                     disabled="false">
+                            <f:ajax listener="#{sisManejadorPrincipalMb.buscarPorCedulaPersonaDetalle()}" 
+                                    render="nombreApellido anioIngreso institucion cargo dependencia laboral concepto objetoGasto monto crear dialogo" />
+                        </p:inputText>
+
+                        <h:outputLabel for="nombreApellido" value="Nombre y Apellido:" style="font-weight:bold"/>  
+                        <p:outputLabel id="nombreApellido" 
+                                       value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.nombre} #{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.apellido}"/>
+
+                        <h:outputLabel for="anioIngreso" value="Año de Ingreso:" style="font-weight:bold"/> 
+                        <p:outputLabel id="anioIngreso" 
+                                       value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.anioIngreso}"/>
+
+                        <h:outputLabel for="institucion" value="Institución:" style="font-weight:bold"/> 
+                        <p:outputLabel id="institucion"
+                                       value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.sisInstitucionId.institucion.toUpperCase()}"/>
+
+                        <h:outputLabel for="cargo" value="Cargo:" style="font-weight:bold"/> 
+                        <p:outputLabel id="cargo" 
+                                       value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.sisCargoId.cargo}"/>
+
+                        <h:outputLabel for="dependencia" value="Dependencia:" style="font-weight:bold"/> 
+                        <p:outputLabel id="dependencia"
+                                       value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.sisDependenciaId.dependencia}"/>
+
+                        <h:outputLabel for="laboral" value="Relación Laboral(*):" style="font-weight:bold"/> 
+                        <p:selectOneMenu id="laboral" 
+                                         value="#{sisManejadorPrincipalMb.personaDetalle.sisRelacionLaboralId.id}" 
+                                         title="Institución"
+                                         label="Institución"
+                                         effect="none"
+                                         disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersonaDetalle}"
+                                         required="true">
+                            <f:selectItem itemLabel="Seleccione una Relación Laboral" 
+                                          noSelectionOption="false"
+                                          itemDisabled="true"/>
+                            <f:selectItems value="#{sisManejadorPrincipalMb.listaRelacionesLaborales}" 
+                                           var="relacionLaboral"
+                                           itemValue="#{relacionLaboral.id}" 
+                                           itemLabel="#{relacionLaboral.relacionLaboral.toUpperCase()}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="concepto" value="Concepto(*):" style="font-weight:bold"/> 
+                        <p:selectOneMenu id="concepto" 
+                                         value="#{sisManejadorPrincipalMb.personaDetalle.sisConceptoId.id}" 
+                                         title="Institución"
+                                         label="Institución"
+                                         effect="none"
+                                         disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersonaDetalle}"
+                                         required="true">
+                            <f:selectItem itemLabel="Seleccione un Concepto" 
+                                          noSelectionOption="false"
+                                          itemDisabled="true"/>
+                            <f:selectItems value="#{sisManejadorPrincipalMb.listaConceptos}" 
+                                           var="concepto"
+                                           itemValue="#{concepto.id}" 
+                                           itemLabel="#{concepto.concepto.toUpperCase()}"/>
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel for="objetoGasto" value="Objeto Gasto(*):" style="font-weight:bold"/> 
+                        <p:inputText id="objetoGasto" class="form-control" 
+                                     label="Objeto Gasto"
+                                     required="true"                                     
+                                     disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersonaDetalle}"
+                                     value="#{sisManejadorPrincipalMb.personaDetalle.objetoGastoCodigo}"/>
+                        
+                        <h:outputLabel for="monto" value="Monto(*):" style="font-weight:bold"/> 
+                        <p:inputText id="monto" class="form-control" 
+                                     label="Monto"
+                                     required="true"                                     
+                                     disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersonaDetalle}"
+                                     value="#{sisManejadorPrincipalMb.personaDetalle.monto}"/>
+                        
+                        
+                        
+                        
+
+                    </h:panelGrid>
+                    <div align="left">
+                        <h:panelGrid columns="2" cellpadding="5" border="0">
+                            <p:commandButton id="crear"
+                                             value="#{sisManejadorPrincipalMb.personaDetalle.id > 0 ? 'Actualizar' : 'Crear'}"
+                                             title="#{sisManejadorPrincipalMb.personaDetalle.id > 0 ? 'Actualizar' : 'Crear'}"
+                                             icon="#{sisManejadorPrincipalMb.personaDetalle.id > 0 ? 'fa fa-refresh' : 'fa fa-check-square-o'}" 
+                                             rendered="true"
+                                             action="#{sisManejadorPrincipalMb.btnCrearModificarPersonaDetalle()}"
+                                             style="margin-right:10px"
+                                             disabled="#{sisManejadorPrincipalMb.bloquearCamposFormPersonaDetalle}"/>
+                            <p:commandButton id="cancelar" 
+                                             value="Cancelar"
+                                             title="Cancelar"
+                                             icon="fa fa-remove"
+                                             style="margin-right:10px"
+                                             action="personas_detalles"
+                                             process="@this"/>
+                        </h:panelGrid>
+                    </div>
+
+
+
+                    <h:panelGrid columns="1" cellpadding="5">
+                        <h:outputLabel value="Tenga en cuenta que los campos con * son obligatorios" 
+                                       style="font-weight:bold; color: #ff0000; font-size: medium"/>                    
+
+                    </h:panelGrid>
+
+                </p:panel>
+            </h:form>
+
+            <p:dialog id="dialogo"
+                      header="Atención"  
+                      modal="true" 
+                      height="100"
+                      draggable="false"
+                      visible="#{sisManejadorPrincipalMb.mostrarDialogoPersonaDetalle == true ? true : false}"
+                      appendTo="@(body)"
+                      resizable="false">
+                <h:outputText value="El funcionario no existe" />
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+</html>

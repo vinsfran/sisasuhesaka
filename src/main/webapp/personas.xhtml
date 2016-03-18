@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+
+        <ui:define name="content">
+            <h:form>
+                <p:dataTable var="persona" 
+                             value="#{sisManejadorPrincipalMb.listaPersonas}" 
+                             widgetVar="carsTable"
+                             emptyMessage="No existen datos para mostrar" 
+                             filteredValue="#{sisManejadorPrincipalMb.filteredPersonas}"
+                             paginator="false"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"
+                             resizableColumns="true"
+                             tableStyle="width:auto">
+
+                    <f:facet name="header">
+                        <div align="center" >
+                            <h:outputText value="Funcionarios"/>
+                        </div>
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton value="Agregar" 
+                                                 title="Agregar"
+                                                 icon="fa fa-plus" 
+                                                 rendered="true"
+                                                 action="#{sisManejadorPrincipalMb.btnAgregarPersona()}"/>
+                            </f:facet>
+
+                        </p:toolbar>
+                    </f:facet>
+                    <p:column headerText="Cedula" filterBy="#{persona.ci}" sortBy="#{persona.ci}">
+                        <h:outputText value="#{persona.ci}" />
+                    </p:column>
+
+                    <p:column headerText="Nombre" filterBy="#{persona.nombre}" sortBy="#{persona.nombre}">
+                        <h:outputText value="#{persona.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="Apellido" >
+                        <h:outputText value="#{persona.apellido}" />
+                    </p:column>
+
+                    <p:column headerText="Cargo">
+                        <h:outputText value="#{persona.sisCargoId.cargo}">
+                            <f:convertNumber currencySymbol="$" type="currency"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Dependencia">
+                        <h:outputText value="#{persona.sisDependenciaId.dependencia}" />
+                    </p:column>
+
+                    <p:column headerText="Institución">
+                        <h:outputText value="#{persona.sisInstitucionId.institucion}" />
+                    </p:column>
+
+                    <p:column style="text-align: center" headerText="Acciones">
+                        <p:commandButton value="Modificar" 
+                                         title="Modificar"
+                                         icon="fa fa-refresh"
+                                         rendered="true"                                             
+                                         action="#{sisManejadorPrincipalMb.btnModificarPersona(persona.id)}"
+                                         style="margin-right: 2px;"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>
+

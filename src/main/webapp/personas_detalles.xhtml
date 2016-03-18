@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/facelets/templates/defaultLayout.xhtml">
+
+        <ui:define name="content">
+            <h:form id="formPersonasDetalles">
+                <p:dataTable id="dataTablePersonasDetalles" var="personaDetalle" 
+                             value="#{sisManejadorPrincipalMb.listaPersonaDetalles}" 
+                             widgetVar="carsTable"
+                             emptyMessage="No existen datos para mostrar" 
+                             filteredValue="#{dtFilterView.filteredCars}"
+                             paginator="false"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"
+                             resizableColumns="true"
+                             tableStyle="width:auto">
+
+                    <f:facet name="header">
+                        <div align="center" >
+                            <h:outputText value="Detalle Funcionarios"/>
+                        </div>
+
+                        <p:toolbar>
+                            <f:facet name="left">
+                                <p:commandButton value="Agregar" 
+                                                 title="Agregar"
+                                                 icon="fa fa-plus" 
+                                                 rendered="true"
+                                                 action="#{sisManejadorPrincipalMb.btnAgregarPersonaDetalle()}"/>
+                            </f:facet>
+
+                        </p:toolbar>
+
+                    </f:facet>
+                    <p:column headerText="Cedula" >
+                        <h:outputText value="#{personaDetalle.sisPersonaId.ci}"/>
+                    </p:column>
+
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{personaDetalle.sisPersonaId.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="Apellido" >
+                        <h:outputText value="#{personaDetalle.sisPersonaId.apellido}" />
+                    </p:column>
+
+                    <p:column headerText="Monto" style="text-align: right;">
+                        <h:outputText value="#{personaDetalle.monto}">
+                            <f:convertNumber currencySymbol="G " type="currency" minFractionDigits="0"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Concepto">
+                        <h:outputText value="#{personaDetalle.sisConceptoId.concepto}" />
+                    </p:column>
+
+                    <p:column headerText="Relación Laboral">
+                        <h:outputText value="#{personaDetalle.sisRelacionLaboralId.relacionLaboral}" />
+                    </p:column>
+
+                    <p:column headerText="Objeto Gasto" style="text-align: center;">
+                        <h:outputText value="#{personaDetalle.objetoGastoCodigo}" />
+                    </p:column>
+
+                    <p:column headerText="Dependencia">
+                        <h:outputText value="#{personaDetalle.sisPersonaId.sisDependenciaId.dependencia}"/>
+                    </p:column>
+
+                    <p:column headerText="Año de Ingreso" >
+                        <h:outputText value="#{personaDetalle.sisPersonaId.anioIngreso}" />
+                    </p:column>
+
+                    <p:column style="text-align: center" headerText="Acciones">
+                        <p:commandButton value="Modificar" 
+                                         title="Modificar"
+                                         icon="fa fa-refresh"
+                                         rendered="true"                                             
+                                         action="#{sisManejadorPrincipalMb.btnModificarPersonaDetalle(personaDetalle.id)}"
+                                         style="margin-right: 2px;"/>
+                        <p:growl id="message" showDetail="true" />
+                        <p:commandButton value="Eliminar" 
+                                         title="Eliminar"
+                                         icon="fa fa-trash"
+                                         actionListener="#{sisManejadorPrincipalMb.btnEliminarPersonaDetalle(personaDetalle.id)}"
+                                         style="margin-right: 2px;"
+                                         update="formPersonasDetalles:dialogo"
+                                         process="@this"/>
+
+                    </p:column>
+                </p:dataTable>
+                <p:confirmDialog id="dialogo" 
+                                 global="true" style="white-space: pre;" 
+                                 visible="#{sisManejadorPrincipalMb.mostrarDialogoEliminarPersonaDetalle}"
+                                 closable="false">
+                    <f:facet name="header">
+                        <h:outputText value="Esta seguro que desea eliminar?" />
+                    </f:facet>
+
+                    <f:facet name="message">
+                        <h:panelGrid id="grid" columns="2" cellpadding="5">
+                            <h:outputLabel for="cedula" value="Cedula:" style="font-weight:bold"/>                    
+                            <p:outputLabel id="cedula" 
+                                           value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.ci}"/>
+                            <h:outputLabel for="nombreApellido" value="Nombre y Apellido:" style="font-weight:bold"/>  
+                            <p:outputLabel id="nombreApellido" 
+                                           value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.nombre} #{personaDetalle.sisPersonaId.apellido}"/>
+                            <h:outputLabel for="monto" value="Monto:" style="font-weight:bold"/>  
+                            <p:outputLabel id="monto" 
+                                           value="#{sisManejadorPrincipalMb.personaDetalle.monto}">
+                                <f:convertNumber currencySymbol="G " type="currency" minFractionDigits="0"/>
+                            </p:outputLabel>
+
+
+                            <h:outputLabel for="concepto" value="Concepto:" style="font-weight:bold"/>  
+                            <p:outputLabel id="concepto" 
+                                           value="#{sisManejadorPrincipalMb.personaDetalle.sisConceptoId.concepto}"/>
+
+                            <h:outputLabel for="relacionLaboral" value="Relación Laboral:" style="font-weight:bold"/>                    
+                            <p:outputLabel id="relacionLaboral" 
+                                           value="#{sisManejadorPrincipalMb.personaDetalle.sisRelacionLaboralId.relacionLaboral}"/>
+
+                            <h:outputLabel for="objetoGasto" value="Objeto Gasto:" style="font-weight:bold"/>                    
+                            <p:outputLabel id="objetoGasto" 
+                                           value="#{sisManejadorPrincipalMb.personaDetalle.objetoGastoCodigo}"/>
+
+                            <h:outputLabel for="dependencia" value="Dependencia:" style="font-weight:bold"/>                    
+                            <p:outputLabel id="dependencia" 
+                                           value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.sisDependenciaId.dependencia}"/>
+
+                            <h:outputLabel for="anioIngreso" value="Año de Ingreso" style="font-weight:bold"/>                    
+                            <p:outputLabel id="anioIngreso" 
+                                           value="#{sisManejadorPrincipalMb.personaDetalle.sisPersonaId.anioIngreso}"/>
+
+                        </h:panelGrid>
+
+                    </f:facet>
+                    <p:commandButton value="Aceptar" 
+                                     icon="fa fa-check-square-o" 
+                                     action="#{sisManejadorPrincipalMb.btnAceptarEliminarPersonaDetalle()}"
+                                     update="formPersonasDetalles:dataTablePersonasDetalles dialogo"/>
+                    <p:commandButton value="Cancelar" 
+                                     icon="fa fa-remove"
+                                     action="#{sisManejadorPrincipalMb.btnCancelarEliminarPersonaDetalle()}"
+                                     update="dialogo"/>
+                </p:confirmDialog>
+
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>
+
