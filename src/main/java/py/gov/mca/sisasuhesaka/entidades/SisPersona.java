@@ -73,7 +73,7 @@ public class SisPersona implements Serializable {
     private SisInstitucion sisInstitucionId;
     @JoinColumn(name = "sis_cargo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private SisCargo sisCargoId;
+    private SisCargo sisCargoId;    
     @JoinColumn(name = "sis_dependencia_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private SisDependencia sisDependenciaId;
